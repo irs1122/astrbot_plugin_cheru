@@ -2,7 +2,7 @@ import re
 from astrbot.api.event import filter, AstrMessageEvent
 from astrbot.api.star import Context, Star, register
 
-# 密文字符集
+# 字符集
 CIPHER_MAP = {
     '0': '切',
     '1': '卟',
@@ -59,7 +59,7 @@ class RepeatAfterMePlugin(Star):
                             hex_gb18030_encoded = ''.join(f'{byte:02x}' for byte in gb18030_encoded)
                             # 将每位的顺序颠倒
                             reversed_hex = ''.join([f'{byte[1]}{byte[0]}' for byte in [hex_gb18030_encoded[i:i+2] for i in range(0, len(hex_gb18030_encoded), 2)]])
-                            # 映射到密文字符集
+                            # 映射到字符集
                             cipher_part = ''.join([CIPHER_MAP.get(reversed_hex[i:i+1].upper(), '') for i in range(len(reversed_hex))])
                             encoded_parts.append(hex_gb18030_encoded)
                             cipher_text_parts.append(cipher_part)
@@ -68,7 +68,7 @@ class RepeatAfterMePlugin(Star):
                             encoded_parts.append(part)
                             cipher_text_parts.append(part)
 
-                    # 构建最终的编码结果和密文结果
+                    # 构建最终的编码结果和结果
                     hex_gb18030_encoded = ' '.join(encoded_parts)
                     cipher_text = ''.join(cipher_text_parts)
 
@@ -83,11 +83,11 @@ class RepeatAfterMePlugin(Star):
 
     @filter.command("cheru")
     async def reverse_translate(self, event: AstrMessageEvent):
-        """逆向翻译密文映射结果"""
+        """逆向翻译映射结果"""
         # 获取用户输入的完整消息
         message_str = event.message_str.strip()
         
-        # 使用正则表达式提取“逆翻译”后面的内容
+        # 使用正则表达式提取“cheru”后面的内容
         match = re.search(r'cheru\s*([\s\S]*)', message_str)
         if match:
             # 提取匹配到的内容
@@ -116,4 +116,4 @@ class RepeatAfterMePlugin(Star):
             else:
                 yield event.plain_result("切噜～♪切噼巴唎噼噼噼切噼铃拉啰铃")
         else:
-            yield event.plain_result("开头不是‘cheru’听不懂喵")
+            yield event.plain_result("开头不是‘cheru’听不懂切噜噜")
